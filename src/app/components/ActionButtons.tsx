@@ -1,11 +1,26 @@
 import React from 'react';
 import { Navigation, Building2 } from 'lucide-react';
 
-export function ActionButtons() {
+const SHELTER_LOCATION = {
+  name: '서울시청 본관',
+  latitude: 37.5665,
+  longitude: 126.9780,
+};
+
+interface ActionButtonsProps {
+  userLocation: { latitude: number; longitude: number } | null;
+  onShowRoute: () => void;
+}
+
+export function ActionButtons({ userLocation, onShowRoute }: ActionButtonsProps) {
   return (
     <div className="space-y-3 pb-8">
       {/* 대피 경로 보기 버튼 */}
-      <button className="w-full bg-gradient-to-r from-orange-600 to-red-600 hover:from-orange-500 hover:to-red-500 text-white font-bold py-5 px-6 rounded-xl flex items-center justify-center gap-3 transition-all shadow-lg border-2 border-orange-400 active:scale-95 min-h-[56px]">
+      <button
+        onClick={onShowRoute}
+        disabled={!userLocation}
+        className="w-full bg-gradient-to-r from-orange-600 to-red-600 hover:from-orange-500 hover:to-red-500 text-white font-bold py-5 px-6 rounded-xl flex items-center justify-center gap-3 transition-all shadow-lg border-2 border-orange-400 active:scale-95 min-h-[56px] disabled:opacity-50 disabled:cursor-not-allowed"
+      >
         <Navigation className="w-6 h-6" />
         <span className="text-lg">대피 경로 보기</span>
       </button>
