@@ -10,7 +10,7 @@ import { BuildingInfoModal } from "./components/BuildingInfoModal";
 export default function App() {
   const [alertLevel, setAlertLevel] = useState<
     "safe" | "caution" | "warning" | "critical"
-  >("critical");
+  >("warning");
 
   // 재난 시나리오 데이터 정의
   const DISASTER_SCENARIOS = {
