@@ -1,7 +1,20 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Waves, ArrowUp, CircleAlert } from 'lucide-react';
 
 export function DetailCard() {
+  const { tsunamiHeight, inundationDepth } = useMemo(() => {
+    // 예상 해일 높이 (2.0m ~ 5.0m 사이 랜덤)
+    const height = 2 + Math.random() * 3;
+    // 침수 높이는 해일 높이의 2~4배
+    const multiplier = 2 + Math.random() * 2;
+    const depth = height * multiplier;
+
+    return {
+      tsunamiHeight: height.toFixed(1),
+      inundationDepth: depth.toFixed(1),
+    };
+  }, []);
+
   return (
     <div className="bg-[#1a1a1a] border border-gray-700 rounded-xl p-5">
       {/* 카드 헤더 */}
@@ -20,7 +33,7 @@ export function DetailCard() {
             </div>
             <div>
               <div className="text-xs text-gray-400">예상 해일 높이</div>
-              <div className="text-2xl font-bold text-white">2.8m</div>
+              <div className="text-2xl font-bold text-white">{tsunamiHeight}m</div>
             </div>
           </div>
         </div>
@@ -33,7 +46,7 @@ export function DetailCard() {
             </div>
             <div>
               <div className="text-xs text-gray-400">침수 예상 높이</div>
-              <div className="text-2xl font-bold text-white">1.2m</div>
+              <div className="text-2xl font-bold text-white">{inundationDepth}m</div>
             </div>
           </div>
         </div>
@@ -49,17 +62,7 @@ export function DetailCard() {
           </div>
         </div>
 
-        {/* 추가 정보 */}
-        <div className="grid grid-cols-2 gap-3 mt-4">
-          <div className="bg-[#252525] rounded-lg p-3 border border-gray-700">
-            <div className="text-xs text-gray-400 mb-1">풍속</div>
-            <div className="text-lg font-semibold text-white">32 m/s</div>
-          </div>
-          <div className="bg-[#252525] rounded-lg p-3 border border-gray-700">
-            <div className="text-xs text-gray-400 mb-1">조위</div>
-            <div className="text-lg font-semibold text-white">만조</div>
-          </div>
-        </div>
+        {/* (풍속 및 조위 정보 제거됨) */}
       </div>
     </div>
   );
