@@ -11,15 +11,22 @@ export default function App() {
   const [alertLevel, setAlertLevel] = useState<
     "safe" | "caution" | "warning" | "critical"
   >("critical");
-  const [userLocation, setUserLocation] = useState<{ latitude: number; longitude: number } | null>(null);
+  const [userLocation, setUserLocation] = useState<{
+    latitude: number;
+    longitude: number;
+  } | null>(null);
   // API로 불러올 데이터를 시뮬레이션하는 상태
   const [shelterData, setShelterData] = useState({
-    building_name: "서울시청 본관",
-    road_address: "서울 중구 세종대로 110",
-    safe_from_floor: "3층",
-    id: "7984898",
-    latitude: 37.5665,
-    longitude: 126.9780,
+    // 기존 구조 유지하되 값만 교체
+    building_name: "해운대두산위브더제니스아파트",
+    // RouteModal 등에서 사용하는 간단한 'name' 필드도 추가
+    name: "해운대두산위브더제니스아파트",
+    road_address: "부산광역시 해운대구 마린시티2로 33",
+    // UI는 '층' 문자열을 기대하므로 문자열로 유지
+    safe_from_floor: "1층",
+    id: "2769",
+    latitude: 35.1566275,
+    longitude: 129.1450724,
   });
 
   const [showRouteModal, setShowRouteModal] = useState(false);
@@ -41,7 +48,10 @@ export default function App() {
             <AlertCard alertLevel={alertLevel} shelterData={shelterData} />
 
             {/* 지도 영역 */}
-            <MapView onLocationChange={setUserLocation} shelterData={shelterData} />
+            <MapView
+              onLocationChange={setUserLocation}
+              shelterData={shelterData}
+            />
 
             {/* 상세 정보 카드 */}
             <DetailCard />
@@ -51,7 +61,8 @@ export default function App() {
               userLocation={userLocation}
               onShowRoute={() => setShowRouteModal(true)}
               onShowBuildingInfo={() => setShowBuildingInfoModal(true)}
-              shelterData={shelterData} />
+              shelterData={shelterData}
+            />
           </div>
         </div>
         {/* 경로 표시 모달 */}
