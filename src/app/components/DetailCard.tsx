@@ -1,20 +1,12 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { Waves, ArrowUp, CircleAlert } from 'lucide-react';
 
-export function DetailCard() {
-  const { tsunamiHeight, inundationDepth } = useMemo(() => {
-    // 예상 해일 높이 (2.0m ~ 5.0m 사이 랜덤)
-    const height = 2 + Math.random() * 3;
-    // 침수 높이는 해일 높이의 2~4배
-    const multiplier = 2 + Math.random() * 2;
-    const depth = height * multiplier;
+interface DetailCardProps {
+  tsunamiHeight: string;
+  inundationDepth: string;
+}
 
-    return {
-      tsunamiHeight: height.toFixed(1),
-      inundationDepth: depth.toFixed(1),
-    };
-  }, []);
-
+export function DetailCard({ tsunamiHeight, inundationDepth }: DetailCardProps) {
   return (
     <div className="bg-[#1a1a1a] border border-gray-700 rounded-xl p-5">
       {/* 카드 헤더 */}
@@ -61,8 +53,6 @@ export function DetailCard() {
             최근 3시간 기압 변동률: -15.2 hPa/h
           </div>
         </div>
-
-        {/* (풍속 및 조위 정보 제거됨) */}
       </div>
     </div>
   );

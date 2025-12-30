@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+  import React, { useState } from "react";
 import { StatusHeader } from "./components/StatusHeader";
 import { AlertCard } from "./components/AlertCard";
 import { MapView } from "./components/MapView";
@@ -11,6 +11,37 @@ export default function App() {
   const [alertLevel, setAlertLevel] = useState<
     "safe" | "caution" | "warning" | "critical"
   >("critical");
+
+  // 재난 시나리오 데이터 정의
+  const DISASTER_SCENARIOS = {
+    safe: {
+      tsunamiHeight: "0.0",
+      inundationDepth: "0.0",
+      description: "안전합니다. 대피할 필요가 없습니다.",
+      safeFloor: "1층",
+    },
+    caution: {
+      tsunamiHeight: "0.2",
+      inundationDepth: "0.6", // 0.2 * 3 (2~4배 사이)
+      description: "해안가 접근을 자제하고 예의주시하세요.",
+      safeFloor: "2층 이상",
+    },
+    warning: {
+      tsunamiHeight: "1.0",
+      inundationDepth: "3.0", // 1.0 * 3
+      description: "위험 지역에서 즉시 대피 준비하세요.",
+      safeFloor: "3층 이상",
+    },
+    critical: {
+      tsunamiHeight: "3.0",
+      inundationDepth: "9.0", // 3.0 * 3
+      description: "즉시 높은 곳으로 대피하세요!",
+      safeFloor: "5층 이상",
+    },
+  };
+
+  const currentScenario = DISASTER_SCENARIOS[alertLevel];
+
   const [userLocation, setUserLocation] = useState<{
     latitude: number;
     longitude: number;
@@ -23,11 +54,19 @@ export default function App() {
     name: "해운대두산위브더제니스아파트",
     road_address: "부산광역시 해운대구 마린시티2로 33",
     // UI는 '층' 문자열을 기대하므로 문자열로 유지
-    safe_from_floor: "1층",
+    safe_from_floor: currentScenario.safeFloor,
     id: "2769",
     latitude: 35.1566275,
     longitude: 129.1450724,
   });
+
+  // scenario가 바뀌면 shelterData의 safe_from_floor도 업데이트해야 함
+  React.useEffect(() => {
+    setShelterData((prev) => ({
+      ...prev,
+      safe_from_floor: currentScenario.safeFloor,
+    }));
+  }, [currentScenario.safeFloor]);
 
   const [showRouteModal, setShowRouteModal] = useState(false);
   const [showBuildingInfoModal, setShowBuildingInfoModal] = useState(false);
@@ -54,7 +93,10 @@ export default function App() {
             />
 
             {/* 상세 정보 카드 */}
-            <DetailCard />
+            <DetailCard 
+              tsunamiHeight={currentScenario.tsunamiHeight}
+              inundationDepth={currentScenario.inundationDepth}
+            />
 
             {/* 하단 행동 버튼 */}
             <ActionButtons
